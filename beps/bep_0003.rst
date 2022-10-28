@@ -251,19 +251,12 @@ All peers should keep their interest state upto date for all the time:
 
 It initiates the connection as `choked` and interest state as `not interested`.
 
-When data is being transferred, downloaders should keep several
-piece requests queued up at once in order to get good TCP performance
-(this is called 'pipelining'.) On the other side, requests which can't
-be written out to the TCP buffer immediately should be queued up in
-memory rather than kept in an application-level network buffer, so
-they can all be thrown out when a choke happens.
+Downloaders use `pipelining` mechanism. In this process, while peers transfer data, downloaders should keep several pieces of download requests queued up at once to get good TCP performance.
+
+On the other hand, those requests that can't be written to TCP buffer immediately should be queued up in memory rather than application-level network buffer. These memory stored requests should discard afterwards to avoid choking.
 
 The peer wire protocol consists of a handshake followed by a
-never-ending stream of length-prefixed messages. The handshake starts
-with character ninteen (decimal) followed by the string 'BitTorrent
-protocol'. The leading character is a length prefix, put there in the
-hope that other new protocols may do the same and thus be trivially
-distinguishable from each other.
+never-ending stream of length-prefixed messages. The handshake starts with character ninteen (decimal) followed by the string 'BitTorrent protocol'. The leading character is a length prefix, put there in the hope that other new protocols may do the same and thus be trivially distinguishable from each other.
 
 All later integers sent in the protocol are encoded as four bytes
 big-endian.
